@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter/material.dart';
@@ -50,14 +52,16 @@ class NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      navBarStyle: NavBarStyle.style12,
-      padding: NavBarPadding.all(13.0),
-      navBarHeight: 61.0,
-    );
+    return
+
+        PersistentTabView(
+          context,
+          controller: _controller,
+          screens: _buildScreens(),
+          items: _navBarsItems(),
+          navBarStyle: NavBarStyle.style12,
+          padding: NavBarPadding.all(13.0),
+          navBarHeight: 61.0,
+        );
   }
 }
