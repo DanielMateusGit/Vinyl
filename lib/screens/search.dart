@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:vinylproject/model/Video.dart';
+import 'package:vinylproject/model/youtube_query.dart';
 import 'package:http/http.dart' as http;
 
 class Search extends StatefulWidget {
@@ -11,20 +11,19 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   // id per la navigazione + queries di ricerca
   static final String id = 'search_screen';
-  List<Video> _queries = [];
+  List<YoutubeQuery> _queries = [];
   String _query;
 
   // metodo per richiedere video da youtube
   void fetchVideo() async {
     _queries.clear();
-    final response = await http.get(Uri.parse(
-        'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_query&type=video&key=AIzaSyCBkLl_1dEmkxUEUdYJROlL9jMVDfBlCGY'));
+    final response = await http.get(Uri.parse('https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_query&type=video&key=AIzaSyCBkLl_1dEmkxUEUdYJROlL9jMVDfBlCGY'));
 
     if (response.statusCode == 200) {
       var decodedData = jsonDecode(response.body);
 
       for (int i = 0; i < 5; i++) {
-        _queries.add(Video.fromJson(decodedData, i));
+        _queries.add(YoutubeQuery.fromJson(decodedData, i));
       }
 
       _queries.reversed;
