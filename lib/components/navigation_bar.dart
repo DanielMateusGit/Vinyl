@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -7,45 +6,46 @@ import 'package:vinylproject/screens/download.dart';
 import 'package:vinylproject/screens/music.dart';
 import 'package:vinylproject/screens/poadcast.dart';
 import 'package:vinylproject/screens/search.dart';
+import 'package:vinylproject/constants.dart';
 
 class NavigationBar extends StatelessWidget {
 
-  //Schermate della navigazione
+  // views
   List<Widget> _buildScreens() => [Music(), Poadcast(), Search(), Downloads()];
 
-  //Controller della navigazione
+  // navigation controller
   final PersistentTabController _controller  = PersistentTabController(initialIndex: 0);
 
-  // Icone della navigazione
+  // tabs of navigator
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.headset_outlined),
-        iconSize: 30.0,
+        icon: icons[0],
+        iconSize: iconSize,
         title: ("Music"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: kActivetab,
+        inactiveColorPrimary: kUnactivetab,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.record_voice_over_outlined),
-        iconSize: 30.0,
+        icon: icons[1],
+        iconSize: iconSize,
         title: ("Poadcast"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: kActivetab,
+        inactiveColorPrimary: kUnactivetab,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.search_outlined),
-        iconSize: 30.0,
+        icon: icons[2],
+        iconSize: iconSize,
         title: ("Search"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: kActivetab,
+        inactiveColorPrimary: kUnactivetab,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.file_download),
-        iconSize: 30.0,
+        icon: icons[3],
+        iconSize: iconSize,
         title: ("Downloads"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: kActivetab,
+        inactiveColorPrimary: kUnactivetab,
       ),
     ];
   }
@@ -53,15 +53,14 @@ class NavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-
         PersistentTabView(
           context,
           controller: _controller,
           screens: _buildScreens(),
           items: _navBarsItems(),
-          navBarStyle: NavBarStyle.style12,
-          padding: NavBarPadding.all(13.0),
-          navBarHeight: 61.0,
+          navBarStyle: kNavigatorstyle,
+          padding: kNavigatorpadding,
+          navBarHeight:kNavigatorHeight,
         );
   }
 }

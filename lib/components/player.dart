@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,18 @@ class Player extends StatelessWidget {
                         ),
                       );
                     } else {
-                      return Text('Totale Visualizzazione');
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            child: Text('prova di un bottone'),
+                            onPressed: (){
+                              print('bottone premuto');
+                            },
+                          )
+                        ],
+                      );
                     }
                   },
                 ),
@@ -81,6 +93,18 @@ class CurrentSong extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
+          ),
+        ),
+        SizedBox(
+          width: 10.0,
+        ),
+        GestureDetector(
+          onTap: (){
+            print('toccato il bottone play');
+          },
+          child: Icon(
+            Icons.play_arrow,
+            color: Colors.black,
           ),
         ),
       ],
