@@ -20,6 +20,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 // youtube query theme settings
 
   // title text format
-  const kTextPaddingTop = 15.0;
+  const kTextPaddingTop = 20.0;
   const kTextPaddingLeft = 10.0;
   const kTitleFontSize = 18.0;

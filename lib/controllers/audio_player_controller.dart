@@ -12,7 +12,6 @@ class AudioController{
 
   AudioController._internal();
 
-
   // instance of player from audioplayers package
   AudioPlayer _player = AudioPlayer();
 

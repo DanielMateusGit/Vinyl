@@ -20,16 +20,16 @@ class Player extends StatelessWidget {
       children: [
         child,
         Padding(
-          padding: EdgeInsets.only(bottom: 61.0),
+          padding: EdgeInsets.only(bottom: 55.0),
           child: Consumer<Playernotifier>(
             builder: (context, player, child) {
               return Offstage(
                 offstage: player.getVisibility(),
                 child: Miniplayer(
-                  minHeight: 100,
+                  minHeight: 70,
                   maxHeight: height,
                   builder: (height, percentage) {
-                    if (height <= 100 && player.getTitle() != null) {
+                    if (height <= 70 && player.getTitle() != null) {
                       return Container(
                         color: Colors.white,
                         child: CurrentSong(
@@ -70,42 +70,48 @@ class CurrentSong extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          width: 150.0,
-          decoration: BoxDecoration(
-            image: new DecorationImage(
-                image: new NetworkImage(thumbnail), fit: BoxFit.cover),
-          ),
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Flexible(
-          child: Container(
-            padding: new EdgeInsets.only(right: 10.0),
-            child: Text(
-              title,
-              overflow: TextOverflow.fade,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+        Row(
+          children: [
+            Container(
+              width: 160.0,
+              height: 70.0,
+              decoration: BoxDecoration(
+                image: new DecorationImage(
+                    image: new NetworkImage(thumbnail), fit: BoxFit.cover),
               ),
             ),
-          ),
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        GestureDetector(
-          onTap: (){
-            print('toccato il bottone play');
-          },
-          child: Icon(
-            Icons.play_arrow,
-            color: Colors.black,
-          ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Flexible(
+              child: Container(
+                padding: new EdgeInsets.only(right: 10.0),
+                child: Text(
+                  title,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                print('toccato il bottone play');
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Icon(
+                  Icons.play_arrow,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
