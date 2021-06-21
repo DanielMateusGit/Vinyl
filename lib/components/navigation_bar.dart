@@ -11,7 +11,7 @@ import 'package:vinylproject/constants.dart';
 class NavigationBar extends StatelessWidget {
 
   // views
-  List<Widget> _buildScreens() => [Music(), Poadcast(), Search(), Downloads()];
+  List<Widget> _buildScreens() => [Music(), Podcast(), Search(), Downloads()];
 
   // navigation controller
   final PersistentTabController _controller  = PersistentTabController(initialIndex: 0);

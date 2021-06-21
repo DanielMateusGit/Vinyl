@@ -6,12 +6,12 @@ import 'components/player.dart';
 
 void main() => runApp(
 
-      // global provider
-      ChangeNotifierProvider(
-        create: (context) => Playernotifier(),
-        child: Vinyl(),
-      ),
-    );
+  // global provider
+  ChangeNotifierProvider(
+    create: (context) => Playernotifier(),
+    child: Vinyl(),
+  ),
+);
 
 class Vinyl extends StatelessWidget {
   @override
