@@ -23,7 +23,7 @@ class _DownloadsState extends State<Downloads> {
         ),
         body: TabBarView(
           children: ['Brani', 'Podcast']
-              .map((name) =>  Prova(name: name
+              .map((name) =>  Prova( name:name
           ))
               .toList(growable: false),
         ),

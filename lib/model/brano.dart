@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vinylproject/controllers/audio_player_controller.dart';
@@ -69,12 +71,12 @@ class Brano extends StatelessWidget {
                     },
                     child: new Container(
                       child: new Padding(
-                        child: new Image.network(
+                        child:  Image.network(
                           image,
                           fit: BoxFit.cover,
                           width: 160.0,
                           height: 90.0,
-                        ),
+                        ) ,
                         padding: const EdgeInsets.all(4.0),
                       ),
                       padding: const EdgeInsets.all(0.0),
@@ -186,19 +188,22 @@ class _MusicState extends State<Music> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(''),
+      ),
+      body : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.only(left: 15.0, top: 25.0),
             child: Text(
-              '_Music',
+              'Music',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2,
-                fontSize: 18,
+                letterSpacing: 1,
+                fontSize: 30,
               ),
             ),
           ),
@@ -242,19 +247,22 @@ class _PodcastState extends State<Podcast> with AutomaticKeepAliveClientMixin<Po
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(''),
+      ),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.only(left: 15.0, top: 25.0),
             child: Text(
-              '_Podcast',
+              'Podcast',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2,
-                fontSize: 18,
+                letterSpacing: 1,
+                fontSize: 30,
               ),
             ),
           ),
