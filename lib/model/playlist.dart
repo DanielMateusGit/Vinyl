@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vinylproject/constants.dart';
-class Playlist extends StatelessWidget{
+class PlayList extends StatelessWidget{
   final int id;
   final String nome;
   final String sottotitolo;
   final int tipo;
 
-  Playlist({ this.nome,
+  PlayList({ this.nome,
     this.id,
     this.tipo,
     this.sottotitolo

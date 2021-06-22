@@ -12,7 +12,7 @@ class PlaylistDBController {
 
     onCreate: (db, version) {
     return db.execute(
-    'CREATE TABLE playlist(id INTEGER PRIMARY KEY, '
+    'CREATE TABLE playlist(id INTEGER PRIMARY KEY  AUTO_INCREMENT, '
     'nome TEXT, '
         'sottotitolo TEXT, '
     'tipo INTEGER '
@@ -25,7 +25,7 @@ class PlaylistDBController {
 
   }
 
-    static Future<void> insertPlaylist(Playlist playlist) async {
+    static Future<void> insertPlaylist(PlayList playlist) async {
       // Get a reference to the database.
       await init();
       final db = await database;
@@ -40,7 +40,7 @@ class PlaylistDBController {
     }
 
 
-  static Future<List<Playlist>> Playlists(int type) async {
+  static Future<List<PlayList>> Playlists(int type) async {
     await init();
       final db = await database;
 
@@ -49,7 +49,7 @@ class PlaylistDBController {
 
 
       return List.generate(maps.length, (i) {
-        return Playlist(
+        return PlayList(
           id: maps[i]['id'],
           nome: maps[i]['nome'],
             sottotitolo: maps[i]['sottotitolo'],

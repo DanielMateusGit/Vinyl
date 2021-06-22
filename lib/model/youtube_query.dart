@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vinylproject/constants.dart';
 import 'package:vinylproject/controllers/audio_player_controller.dart';
+import 'package:vinylproject/controllers/brano_db_controller.dart';
+import 'package:vinylproject/controllers/playlist_db_controller.dart';
+import 'package:vinylproject/model/brano.dart';
+import 'package:vinylproject/model/playlist.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 
@@ -54,7 +58,8 @@ class YoutubeQuery extends StatelessWidget {
   void update(BuildContext context) {
     // update miniplayer by provider
     Provider.of<Playernotifier>(context, listen: false).changeVisibility(false);
-    Provider.of<Playernotifier>(context, listen: false).changeThumbnail(thumbnail);
+    Provider.of<Playernotifier>(context, listen: false)
+        .changeThumbnail(thumbnail);
     Provider.of<Playernotifier>(context, listen: false).changeTitle(title);
   }
 
@@ -64,65 +69,136 @@ class YoutubeQuery extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 230.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(thumbnail), fit: BoxFit.cover),
-            ),
-          ),
-          onTap: () async {
-            // update miniplayer
-            update(context);
+        Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () async {
+                      // update miniplayer
+                      update(context);
 
-            // play audio
-            String getUrl = await _getMedia();
-            _audio.prepare(getUrl);
-            _audio.play(getUrl);
-          },
-        ),
-        Row(
-          children: [
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.only(top: kTextPaddingTop),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: kTextPaddingLeft),
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        title,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: kTitleFontSize,
-                          fontWeight: FontWeight.bold,
+                      // play audio
+                      String getUrl = await _getMedia();
+                      _audio.prepare(getUrl);
+                      _audio.play(getUrl);
+                    },
+                    child: new Container(
+                      child: new Padding(
+                        child: new Image.network(
+                          thumbnail,
+                          fit: BoxFit.cover,
+                          width: 160.0,
+                          height: 90.0,
                         ),
+                        padding: const EdgeInsets.all(4.0),
+                      ),
+                      padding: const EdgeInsets.all(0.0),
+                      alignment: Alignment.centerLeft,
+                      width: 80.0,
+                      height: 45.0,
+                    ),
+                  ),
+                  new Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        // update miniplayer
+                        update(context);
+
+                        // play audio
+                        String getUrl = await _getMedia();
+                        _audio.prepare(getUrl);
+                        _audio.play(getUrl);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                        child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                title,
+                                style: new TextStyle(
+                                    fontSize: 12.0,
+                                    color: const Color(0xFFffffff),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: "Roboto"),
+                              ),
+                              new Text(
+                                channel,
+                                style: new TextStyle(
+                                    fontSize: 12.0,
+                                    color: const Color(0xFFffffff),
+                                    fontWeight: FontWeight.w200,
+                                    fontFamily: "Roboto"),
+                              )
+                            ]),
                       ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(left: kTextPaddingLeft),
-                        child: Text(channel)),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              child: Padding(
-                padding: EdgeInsets.only(right: kTextPaddingLeft, top: kTextPaddingTop, left: kTextPaddingLeft),
-                child: Icon(
-                  Icons.more_vert,
-                ),
-              ),
-              onTap: (){
+                  ),
+                  new Container(
+                    child: new DropdownButton<String>(
+                      isExpanded: true,
+                      icon: const Icon(Icons.more_vert),
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (String newValue) {
+                        if(newValue=="Scarica")
+                          {
 
-              },
-            ),
-          ],
-        ),
+                          }
+                        if (newValue == "Aggiungi")
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  scrollable: true,
+                                  title: Text('Aggiungi a Playlist'),
+
+                                  actions: [
+                                    ElevatedButton(
+                                        child: Text("Podcast"),
+                                        onPressed: () async{
+                                          Brano f = new  Brano(nome: title,idPlaylist: 1,channel: channel,image:thumbnail,url: await _getMedia());
+                                          await BranoDBController.insertBrano(f);
+
+                                          Navigator.pop(context);
+
+                                        }),
+                                    ElevatedButton(
+                                        child: Text("Musica"),
+                                        onPressed: () async{
+                                          Brano f = new  Brano(nome: title,idPlaylist: 0,channel: channel,image:thumbnail,url: await _getMedia());
+                                          await BranoDBController.insertBrano(f);
+
+                                         Navigator.pop(context);
+
+                                        })
+                                  ],
+                                );
+                              });
+                      },
+                      underline: Container(
+                        height: 0,
+                      ),
+                      items: <String>['Scarica', 'Aggiungi']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    padding: const EdgeInsets.all(0.0),
+                    alignment: Alignment.centerLeft,
+                    width: 60.0,
+                    height: 50.0,
+                  ),
+                ]))
       ],
     );
   }

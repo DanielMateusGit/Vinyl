@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:vinylproject/constants.dart';
+import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/youtube_query.dart';
 import 'package:http/http.dart' as http;
 
@@ -117,7 +118,7 @@ class _SearchState extends State<Search> {
                     itemCount: _queries.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
-                        padding: EdgeInsets.only(bottom: kTextPaddingTop),
+                        padding: EdgeInsets.only(),
                         child: _queries[index],
                       );
                     },

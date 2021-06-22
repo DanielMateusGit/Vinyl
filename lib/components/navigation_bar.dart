@@ -2,9 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter/material.dart';
+import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/screens/download.dart';
 import 'package:vinylproject/screens/music.dart';
-import 'package:vinylproject/screens/poadcast.dart';
+
 import 'package:vinylproject/screens/search.dart';
 import 'package:vinylproject/constants.dart';
 
@@ -61,6 +62,9 @@ class NavigationBar extends StatelessWidget {
           navBarStyle: kNavigatorstyle,
           padding: kNavigatorpadding,
           navBarHeight:kNavigatorHeight,
+          confineInSafeArea: true,
+          stateManagement: false,
+          popAllScreensOnTapOfSelectedTab: true,
         );
   }
 }

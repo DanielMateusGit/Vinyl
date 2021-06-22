@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vinylproject/constants.dart';
+import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/playlist_db_controller.dart';
+import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/playlist.dart';
 
 class Podcast extends StatefulWidget {
@@ -10,7 +11,7 @@ class Podcast extends StatefulWidget {
 }
 
 class _PodcastState extends State<Podcast> {
-  List<Playlist> _playlists = [];
+  List<Brano> _playlists = [];
   @override
   void initState() {
     init();
@@ -21,12 +22,13 @@ class _PodcastState extends State<Podcast> {
 
 
     //esempio da eliminare
-    Playlist f = new Playlist(nome: "ciawdwooo",id:9,tipo: 1,sottotitolo: "cwdwdcoo",);
-    await PlaylistDBController.insertPlaylist(f);
 
 
-    _playlists=await PlaylistDBController.Playlists(1);
+
+    _playlists=await BranoDBController.brani(1);
     setState(() {});
+
+
   }
   @override
   Widget build(BuildContext context) {
