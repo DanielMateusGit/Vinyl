@@ -21,28 +21,28 @@ class NavigationBar extends StatelessWidget {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: icons[0],
+        icon: Icon(Icons.headset_outlined),
         iconSize: iconSize,
         title: ("Music"),
         activeColorPrimary: kActivetab,
         inactiveColorPrimary: kUnactivetab,
       ),
       PersistentBottomNavBarItem(
-        icon: icons[1],
+        icon:  Icon(Icons.record_voice_over_outlined),
         iconSize: iconSize,
         title: ("Poadcast"),
         activeColorPrimary: kActivetab,
         inactiveColorPrimary: kUnactivetab,
       ),
       PersistentBottomNavBarItem(
-        icon: icons[2],
+        icon: Icon(Icons.search_outlined),
         iconSize: iconSize,
         title: ("Search"),
         activeColorPrimary: kActivetab,
         inactiveColorPrimary: kUnactivetab,
       ),
       PersistentBottomNavBarItem(
-        icon: icons[3],
+        icon: Icon(Icons.file_download),
         iconSize: iconSize,
         title: ("Downloads"),
         activeColorPrimary: kActivetab,
@@ -62,9 +62,8 @@ class NavigationBar extends StatelessWidget {
           navBarStyle: kNavigatorstyle,
           padding: kNavigatorpadding,
           navBarHeight:kNavigatorHeight,
-          confineInSafeArea: true,
-          stateManagement: false,
-          popAllScreensOnTapOfSelectedTab: true,
+
+          backgroundColor: Colors.white10,
         );
   }
 }

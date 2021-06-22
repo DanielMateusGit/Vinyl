@@ -3,16 +3,26 @@ import 'package:provider/provider.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 import 'components/navigation_bar.dart';
 import 'components/player.dart';
+import 'controllers/audio_player_controller.dart';
 
 void main() => runApp(
 
-  // global provider
-  ChangeNotifierProvider(
-    create: (context) => Playernotifier(),
+  MultiProvider(
+    providers: [
+
+      // Provider for miniplayer
+      ChangeNotifierProvider(
+        create: (context) => Playernotifier(),
+      ),
+
+      // Provider for music controller
+      ChangeNotifierProvider(
+        create: (context) => AudioController(),
+      ),
+    ],
     child: Vinyl(),
   ),
 );
-
 class Vinyl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

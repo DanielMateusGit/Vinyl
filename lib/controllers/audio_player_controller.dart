@@ -1,7 +1,8 @@
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 
-class AudioController{
+class AudioController extends ChangeNotifier{
 
   // use of pattern singleton
   static final AudioController _singleton = AudioController._internal();
@@ -15,6 +16,8 @@ class AudioController{
   // instance of player from audioplayers package
   AudioPlayer _player = AudioPlayer();
 
+  // is current song playing?
+  bool _playing = false;
 
   // prepare an audio to play an url, but doesn't play it
   Future<void> prepare(String url) async {
@@ -31,6 +34,8 @@ class AudioController{
     try{
 
       int result = await _player.play(url);
+      _playing = true;
+      notifyListeners();
 
     }catch(e){
 
@@ -40,10 +45,12 @@ class AudioController{
   }
 
   // pause an audio from url
-  Future<void> pause(String url) async {
+  Future<void> pause() async {
     try{
 
       int result = await _player.stop();
+      _playing = false;
+      notifyListeners();
 
     }catch(e){
 
@@ -53,11 +60,12 @@ class AudioController{
   }
 
   // resume and audio (who was in pause status)
-  Future<void> resume(String url) async {
+  Future<void> resume() async {
     try{
 
       int result = await _player.resume();
-
+      _playing = true;
+      notifyListeners();
     }catch(e){
 
       print(e);
@@ -70,12 +78,17 @@ class AudioController{
     try{
 
       int result = await _player.seek(Duration(milliseconds: milliseconds));
+      notifyListeners();
 
     }catch(e){
 
       print(e);
       print('unable to jump trough file');
     }
+  }
+
+  bool getPlayingState(){
+    return this._playing;
   }
 
 }
