@@ -107,7 +107,6 @@ class CurrentSong extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           children: [

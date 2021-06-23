@@ -5,6 +5,7 @@ import 'components/navigation_bar.dart';
 import 'components/player.dart';
 import 'controllers/audio_player_controller.dart';
 import 'controllers/brano_provider.dart';
+import 'package:vinylproject/controllers/AudiosController.dart';
 
 void main() => runApp(
 
@@ -23,13 +24,18 @@ void main() => runApp(
       ChangeNotifierProvider(
         create: (context) => BranoController(),
       ),
+      ChangeNotifierProvider(create: (context) => downloadController()),
     ],
     child: Vinyl(),
   ),
 );
 class Vinyl extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: new Scaffold(

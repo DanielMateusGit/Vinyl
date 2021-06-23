@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
-import 'package:vinylproject/screens//download.dart';
 
-class Prova extends StatefulWidget  {
+class dowloadedAudios extends StatefulWidget  {
   final String name;
-  Prova({ this.name});
+  dowloadedAudios({ this.name});
   @override
-  Provap createState() => Provap(name: name);
+  downloadedAudios createState() => downloadedAudios(name: name);
 }
-class Provap extends  State<Prova>{
+class downloadedAudios extends  State<dowloadedAudios>{
 
   final String name;
-   Provap({ this.name});
+   downloadedAudios({ this.name});
 
   List<Brano> _playlists = [];
   @override
@@ -24,7 +23,6 @@ class Provap extends  State<Prova>{
 
   init() async {
     //esempio da eliminare
-
     _playlists = await BranoDBController.brani(name=="Brani"?2:3);
     setState(() {});
   }

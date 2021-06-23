@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:vinylproject/constants.dart';
+import 'package:vinylproject/controllers/AudiosController.dart';
 import 'package:vinylproject/controllers/audio_player_controller.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/playlist_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/playlist.dart';
 import 'package:vinylproject/screens/music.dart';
+import 'package:vinylproject/screens/prova.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 import 'package:http/http.dart' as http;
@@ -62,52 +64,55 @@ class YoutubeQuery extends StatelessWidget {
   Future<void> _downloadMedia() async {
     var status = await Permission.storage.request();
 
-      // code of read or write file in external storage (SD card)
-      var youtubeMediaExtractor = YoutubeExplode();
+    // code of read or write file in external storage (SD card)
+    var youtubeMediaExtractor = YoutubeExplode();
 
-      try {
-        var manifest =
-        await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
-        var streamInfo = manifest.audioOnly.withHighestBitrate();
-        if (streamInfo != null) {
-          // Get the actual stream
-          var stream = youtubeMediaExtractor.videos.streamsClient.get(
-              streamInfo);
+    try {
+      var manifest =
+          await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
+      var streamInfo = manifest.audioOnly.withHighestBitrate();
+      if (streamInfo != null) {
+        // Get the actual stream
+        var stream = youtubeMediaExtractor.videos.streamsClient.get(streamInfo);
 
-          // Open a file for writing.
-          var fileName = '$url.${streamInfo.container.name.toString()}'
-              .replaceAll(r'\', '')
-              .replaceAll('/', '')
-              .replaceAll('*', '')
-              .replaceAll('?', '')
-              .replaceAll('"', '')
-              .replaceAll('<', '')
-              .replaceAll('>', '')
-              .replaceAll('|', '');
-          Directory appDocDir = await getApplicationDocumentsDirectory();
-          String appDocPath = appDocDir.path;
+        // Open a file for writing.
+        var fileName = '$url.${streamInfo.container.name.toString()}'
+            .replaceAll(r'\', '')
+            .replaceAll('/', '')
+            .replaceAll('*', '')
+            .replaceAll('?', '')
+            .replaceAll('"', '')
+            .replaceAll('<', '')
+            .replaceAll('>', '')
+            .replaceAll('|', '');
+        Directory appDocDir = await getApplicationDocumentsDirectory();
+        String appDocPath = appDocDir.path;
 
-          var file = File('$appDocPath/$fileName');
+        var file = File('$appDocPath/$fileName');
 
-          var fileStream = file.openWrite();
+        var fileStream = file.openWrite();
 
-          // Pipe all the content of the stream into the file.
-          await stream.pipe(fileStream);
+        // Pipe all the content of the stream into the file.
+        await stream.pipe(fileStream);
 
-          // Close the file.
-          await fileStream.flush();
-          await fileStream.close();
+        // Close the file.
+        await fileStream.flush();
+        await fileStream.close();
 
-          youtubeMediaExtractor.close();
+        youtubeMediaExtractor.close();
 
-          Brano b = new Brano(nome:title,url:'$appDocPath/$fileName',channel:channel,image:thumbnail,idPlaylist: 2);
-          await BranoDBController.insertBrano(b);
-          print("scaricato");
-        }
-      } catch (e) {
-        print(e);
-        return 'Unable to find data';
-
+        Brano b = new Brano(
+            nome: title,
+            url: '$appDocPath/$fileName',
+            channel: channel,
+            image: thumbnail,
+            idPlaylist: 2);
+        await BranoDBController.insertBrano(b);
+        print("scaricato");
+      }
+    } catch (e) {
+      print(e);
+      return 'Unable to find data';
     }
   }
 
@@ -206,8 +211,6 @@ class YoutubeQuery extends StatelessWidget {
                       onChanged: (String newValue) {
                         if (newValue == "Scarica") {
                           _downloadMedia();
-
-
                         }
                         if (newValue == "Aggiungi")
                           showDialog(
@@ -228,26 +231,27 @@ class YoutubeQuery extends StatelessWidget {
                                               url: await _getMedia());
                                           await BranoDBController.insertBrano(
                                               f);
-
-                                            context
-                                                .findRootAncestorStateOfType<MusicState>()
-                                                .init();
                                           Navigator.pop(context);
                                         }),
-                                    ElevatedButton(
-                                        child: Text("Musica"),
-                                        onPressed: () async {
-                                          Brano f = new Brano(
-                                              nome: title,
-                                              idPlaylist: 0,
-                                              channel: channel,
-                                              image: thumbnail,
-                                              url: await _getMedia());
-                                          await BranoDBController.insertBrano(
-                                              f);
+                                    Consumer<downloadController>(
+                                      builder: (context, controller, build) {
+                                        return ElevatedButton(
+                                            child: Text("Musica"),
+                                            onPressed: () async {
+                                              Brano f = new Brano(
+                                                  nome: title,
+                                                  idPlaylist: 0,
+                                                  channel: channel,
+                                                  image: thumbnail,
+                                                  url: await _getMedia());
+                                              await BranoDBController
+                                                  .insertBrano(f);
+                                              controller.aggiornaPlaylist();
 
-                                          Navigator.pop(context);
-                                        })
+                                              Navigator.pop(context);
+                                            });
+                                      },
+                                    )
                                   ],
                                 );
                               });
