@@ -44,6 +44,7 @@ class Brano extends StatelessWidget {
     // update miniplayer by provider
     Provider.of<Playernotifier>(context, listen: false).changeVisibility(false);
     Provider.of<Playernotifier>(context, listen: false).changeThumbnail(image);
+    if(url==null)
     Provider.of<Playernotifier>(context, listen: false).changeLocalThumbnail(image);
     Provider.of<Playernotifier>(context, listen: false).changeTitle(nome);
   }

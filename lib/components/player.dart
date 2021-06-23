@@ -36,6 +36,7 @@ class Player extends StatelessWidget {
                         child: CurrentSong(
                           title: player.getTitle(),
                           thumbnail: player.getThumbnail(),
+                          localThumbnail: player.getLocalThumbnail(),
                         ),
                       );
                     } else {
