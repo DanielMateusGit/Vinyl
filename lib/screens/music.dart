@@ -46,13 +46,13 @@ class MusicState extends State<Music> {
           Expanded(
             child: Consumer<downloadController>(
               builder: (context, controller, child) {
-                controller.aggiornaPlaylist();
+                controller.aggiornaPlaylistMusic();
                 return ListView.builder(
-                  itemCount: controller.getPlaylist().length,
+                  itemCount: controller.getPlaylistMusic().length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: EdgeInsets.only(),
-                      child: controller.getPlaylist()[index],
+                      child: controller.getPlaylistMusic()[index],
                     );
                   },
                 );

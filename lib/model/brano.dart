@@ -44,6 +44,7 @@ class Brano extends StatelessWidget {
     // update miniplayer by provider
     Provider.of<Playernotifier>(context, listen: false).changeVisibility(false);
     Provider.of<Playernotifier>(context, listen: false).changeThumbnail(image);
+    Provider.of<Playernotifier>(context, listen: false).changeLocalThumbnail(image);
     Provider.of<Playernotifier>(context, listen: false).changeTitle(nome);
   }
 
@@ -66,7 +67,7 @@ class Brano extends StatelessWidget {
                       update(context);
 
                       // play audio
-                      String getUrl = url;
+                      String getUrl = url!=null? url:path;
                       _audio.prepare(getUrl);
                       _audio.play(getUrl);
                     },
@@ -140,17 +141,7 @@ class Brano extends StatelessWidget {
                       onChanged: (String newValue) async {
                         if (newValue == "Rimuovi") {
                           await BranoDBController.deleteBrano(id);
-                          if (context.findAncestorStateOfType<MusicState>() !=
-                              null)
-                            context
-                                .findRootAncestorStateOfType<MusicState>()
-                                .init();
-                          if (context
-                                  .findAncestorStateOfType<PodcastState>() !=
-                              null)
-                            context
-                                .findRootAncestorStateOfType<PodcastState>()
-                                .init();
+
 
                         }
                       },

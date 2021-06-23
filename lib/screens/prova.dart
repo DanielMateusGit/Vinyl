@@ -1,54 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vinylproject/controllers/AudiosController.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
 
-class dowloadedAudios extends StatefulWidget  {
+class dowloadedAudios extends StatefulWidget {
   final String name;
-  dowloadedAudios({ this.name});
+
+  dowloadedAudios({this.name});
+
   @override
   downloadedAudios createState() => downloadedAudios(name: name);
 }
-class downloadedAudios extends  State<dowloadedAudios>{
 
+class downloadedAudios extends State<dowloadedAudios> {
   final String name;
-   downloadedAudios({ this.name});
 
-  List<Brano> _playlists = [];
-  @override
-  bool get wantKeepAlive => false;
-  @override
-  void initState() {
-    init();
-  }
-
-  init() async {
-    //esempio da eliminare
-    _playlists = await BranoDBController.brani(name=="Brani"?2:3);
-    setState(() {});
-  }
+  downloadedAudios({this.name});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return SafeArea(child:
+        Consumer<downloadController>(builder: (context, controller, child) {
+          this.name=="Brani"? controller.aggiornaPlaylistDMusic():controller.aggiornaPlaylistDPodcast();
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Expanded(
             child: ListView.builder(
-              itemCount: _playlists.length,
+              itemCount: this.name=="Brani"? controller.getPlaylistDMusic().length: controller.getPlaylistDPodcast().length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: EdgeInsets.only(),
-                  child: _playlists[index],
+                  child: this.name=="Brani"? controller.getPlaylistDMusic()[index]:controller.getPlaylistDPodcast()[index]
                 );
               },
             ),
           ),
         ],
-      ),
-    );
+      );
+    }));
   }
-
-
 }

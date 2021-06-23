@@ -51,7 +51,7 @@ class YoutubeQuery extends StatelessWidget {
 
     try {
       var manifest =
-      await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
+          await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
       var streamInfo = manifest.audioOnly.withHighestBitrate();
 
       youtubeMediaExtractor.close();
@@ -62,7 +62,7 @@ class YoutubeQuery extends StatelessWidget {
     }
   }
 
-  Future<void> _downloadMedia() async {
+  Future<void> _downloadMedia(int type) async {
     var status = await Permission.storage.request();
 
     // code of read or write file in external storage (SD card)
@@ -70,7 +70,7 @@ class YoutubeQuery extends StatelessWidget {
 
     try {
       var manifest =
-      await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
+          await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
       var streamInfo = manifest.audioOnly.withHighestBitrate();
       if (streamInfo != null) {
         // Get the actual stream
@@ -114,7 +114,7 @@ class YoutubeQuery extends StatelessWidget {
               path: '$appDocPath/$fileName',
               channel: channel,
               image: path,
-              idPlaylist: 2);
+              idPlaylist: type);
           await BranoDBController.insertBrano(b);
 
           print("scaricato");
@@ -224,46 +224,138 @@ class YoutubeQuery extends StatelessWidget {
                       onChanged: (String newValue) {
                         if (newValue == "Scarica") {
                           showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              Future.delayed(Duration(seconds: 0))
-                                  .then((_) async {
-                                await _downloadMedia();
-                                Navigator.pop(context);
-                              });
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  scrollable: true,
+                                  title: Text('Aggiungi a Playlist'),
+                                  actions: [
+                                    Consumer<downloadController>(
+                                        builder: (context, controller, build) {
+                                      return ElevatedButton(
+                                          child: Text("Podcast"),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                Future.delayed(
+                                                        Duration(seconds: 0))
+                                                    .then((_) async {
+                                                  await _downloadMedia(3);
+                                                  //pop dialog
 
-                              return Dialog(
-                                child: new Container(
-                                    padding: EdgeInsets.all(16),
-                                    child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                              child: Container(
-                                                  child:
-                                                  CircularProgressIndicator(
-                                                      strokeWidth: 3),
-                                                  width: 32,
-                                                  height: 32),
-                                              padding:
-                                              EdgeInsets.only(bottom: 16)),
-                                          Padding(
-                                              child: Text(
-                                                'Caricamento …',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              padding:
-                                              EdgeInsets.only(bottom: 4))
-                                        ])),
-                              );
-                            },
-                          );
+                                                  Navigator.pop(context);
+                                                });
+                                                return Dialog(
+                                                  child: new Container(
+                                                      padding:
+                                                          EdgeInsets.all(16),
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Padding(
+                                                                child: Container(
+                                                                    child: CircularProgressIndicator(
+                                                                        strokeWidth:
+                                                                            3),
+                                                                    width: 32,
+                                                                    height: 32),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            16)),
+                                                            Padding(
+                                                                child: Text(
+                                                                  'Caricamento …',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            4))
+                                                          ])),
+                                                );
+                                              },
+                                            );
+                                            // Navigator.pop(context);
+                                          });
+                                    }),
+                                    Consumer<downloadController>(
+                                        builder: (context, controller, build) {
+                                      return ElevatedButton(
+                                          child: Text("Musica"),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                Future.delayed(
+                                                        Duration(seconds: 0))
+                                                    .then((_) async {
+                                                  await _downloadMedia(2);
+                                                  Navigator.pop(context);
+                                                });
+                                                return Dialog(
+                                                  child: new Container(
+                                                      padding:
+                                                          EdgeInsets.all(16),
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Padding(
+                                                                child: Container(
+                                                                    child: CircularProgressIndicator(
+                                                                        strokeWidth:
+                                                                            3),
+                                                                    width: 32,
+                                                                    height: 32),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            16)),
+                                                            Padding(
+                                                                child: Text(
+                                                                  'Caricamento …',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            4))
+                                                          ])),
+                                                );
+                                              },
+                                            );
+                                          });
+                                    })
+                                  ],
+                                );
+                              });
                         }
                         if (newValue == "Aggiungi")
                           showDialog(
@@ -273,138 +365,143 @@ class YoutubeQuery extends StatelessWidget {
                                   scrollable: true,
                                   title: Text('Aggiungi a Playlist'),
                                   actions: [
-                                    ElevatedButton(
-                                        child: Text("Podcast"),
-                                        onPressed: () async {
-                                          Navigator.pop(context);
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (BuildContext context) {
-                                              Future.delayed(
-                                                  Duration(seconds: 0))
-                                                  .then((_) async {
-                                                Brano f = new Brano(
-                                                    nome: title,
-                                                    idPlaylist: 1,
-                                                    channel: channel,
-                                                    image: thumbnail,
-                                                    url: await _getMedia());
-                                                await BranoDBController
-                                                    .insertBrano(f);
-                                                //pop dialog
+                                    Consumer<downloadController>(
+                                        builder: (context, controller, build) {
+                                      return ElevatedButton(
+                                          child: Text("Podcast"),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                Future.delayed(
+                                                        Duration(seconds: 0))
+                                                    .then((_) async {
+                                                  Brano f = new Brano(
+                                                      nome: title,
+                                                      idPlaylist: 1,
+                                                      channel: channel,
+                                                      image: thumbnail,
+                                                      url: await _getMedia());
+                                                  await BranoDBController
+                                                      .insertBrano(f);
+                                                  //pop dialog
 
-                                                Navigator.pop(context);
-                                              });
-                                              return Dialog(
-                                                child: new Container(
-                                                    padding: EdgeInsets.all(16),
-                                                    child: Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                        mainAxisSize:
-                                                        MainAxisSize.min,
-                                                        children: [
-                                                          Padding(
-                                                              child: Container(
-                                                                  child: CircularProgressIndicator(
-                                                                      strokeWidth:
-                                                                      3),
-                                                                  width: 32,
-                                                                  height: 32),
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                  bottom:
-                                                                  16)),
-                                                          Padding(
-                                                              child: Text(
-                                                                'Caricamento …',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                    16),
-                                                                textAlign:
-                                                                TextAlign
-                                                                    .center,
-                                                              ),
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                  bottom:
-                                                                  4))
-                                                        ])),
-                                              );
-                                            },
-                                          );
-                                          // Navigator.pop(context);
-                                        }),
-    Consumer<downloadController>(
-    builder: (context, controller, build) {
-                                return    ElevatedButton(
-                                        child: Text("Musica"),
-                                        onPressed: () async {
-                                          Navigator.pop(context);
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (BuildContext context) {
-                                              Future.delayed(
-                                                  Duration(seconds: 0))
-                                                  .then((_) async {
-                                                Brano f = new Brano(
-                                                    nome: title,
-                                                    idPlaylist: 0,
-                                                    channel: channel,
-                                                    image: thumbnail,
-                                                    url: await _getMedia());
-                                                await BranoDBController
-                                                    .insertBrano(f);
-                                                Navigator.pop(context);
-                                              });
-                                              return Dialog(
-                                                child: new Container(
-                                                    padding: EdgeInsets.all(16),
-                                                    child: Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                        mainAxisSize:
-                                                        MainAxisSize.min,
-                                                        children: [
-                                                          Padding(
-                                                              child: Container(
-                                                                  child: CircularProgressIndicator(
-                                                                      strokeWidth:
-                                                                      3),
-                                                                  width: 32,
-                                                                  height: 32),
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                  bottom:
-                                                                  16)),
-                                                          Padding(
-                                                              child: Text(
-                                                                'Caricamento …',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                    16),
-                                                                textAlign:
-                                                                TextAlign
-                                                                    .center,
-                                                              ),
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                  bottom:
-                                                                  4))
-                                                        ])),
-                                              );
-                                            },
-                                          );
-                                        });
-    })
+                                                  Navigator.pop(context);
+                                                });
+                                                return Dialog(
+                                                  child: new Container(
+                                                      padding:
+                                                          EdgeInsets.all(16),
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Padding(
+                                                                child: Container(
+                                                                    child: CircularProgressIndicator(
+                                                                        strokeWidth:
+                                                                            3),
+                                                                    width: 32,
+                                                                    height: 32),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            16)),
+                                                            Padding(
+                                                                child: Text(
+                                                                  'Caricamento …',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            4))
+                                                          ])),
+                                                );
+                                              },
+                                            );
+                                            // Navigator.pop(context);
+                                          });
+                                    }),
+                                    Consumer<downloadController>(
+                                        builder: (context, controller, build) {
+                                      return ElevatedButton(
+                                          child: Text("Musica"),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                Future.delayed(
+                                                        Duration(seconds: 0))
+                                                    .then((_) async {
+                                                  Brano f = new Brano(
+                                                      nome: title,
+                                                      idPlaylist: 0,
+                                                      channel: channel,
+                                                      image: thumbnail,
+                                                      url: await _getMedia());
+                                                  await BranoDBController
+                                                      .insertBrano(f);
+                                                  Navigator.pop(context);
+                                                });
+                                                return Dialog(
+                                                  child: new Container(
+                                                      padding:
+                                                          EdgeInsets.all(16),
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Padding(
+                                                                child: Container(
+                                                                    child: CircularProgressIndicator(
+                                                                        strokeWidth:
+                                                                            3),
+                                                                    width: 32,
+                                                                    height: 32),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            16)),
+                                                            Padding(
+                                                                child: Text(
+                                                                  'Caricamento …',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            4))
+                                                          ])),
+                                                );
+                                              },
+                                            );
+                                          });
+                                    })
                                   ],
                                 );
                               });

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miniplayer/miniplayer.dart';
@@ -99,9 +101,10 @@ class Player extends StatelessWidget {
 }
 
 class CurrentSong extends StatelessWidget {
-  CurrentSong({this.thumbnail, this.title});
+  CurrentSong({this.thumbnail, this.title,this.localThumbnail});
 
   final String thumbnail;
+  final String localThumbnail;
   final String title;
 
   @override
@@ -115,7 +118,7 @@ class CurrentSong extends StatelessWidget {
               height: 70.0,
               decoration: BoxDecoration(
                 image: new DecorationImage(
-                    image: new NetworkImage(thumbnail), fit: BoxFit.cover),
+                    image: localThumbnail==null? new NetworkImage(thumbnail):new FileImage(File(localThumbnail)), fit: BoxFit.cover),
               ),
             ),
             SizedBox(

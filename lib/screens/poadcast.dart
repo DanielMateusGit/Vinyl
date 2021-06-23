@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vinylproject/controllers/AudiosController.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/playlist_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
@@ -11,18 +13,13 @@ class Podcast extends StatefulWidget  {
 }
 
 class PodcastState extends State<Podcast> {
-  List<Brano> _playlists = [];
+
   @override
   void initState() {
-    init();
+
   }
 
-  init() async {
-    //esempio da eliminare
 
-    _playlists = await BranoDBController.brani(1);
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +43,17 @@ class PodcastState extends State<Podcast> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _playlists.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.only(),
-                  child: _playlists[index],
+            child: Consumer<downloadController>(
+              builder: (context, controller, child) {
+                controller.aggiornaPlaylistPodcast();
+                return ListView.builder(
+                  itemCount: controller.getPlaylistPodcast().length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: EdgeInsets.only(),
+                      child: controller.getPlaylistPodcast()[index],
+                    );
+                  },
                 );
               },
             ),

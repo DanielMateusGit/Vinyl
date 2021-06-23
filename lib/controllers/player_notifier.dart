@@ -5,6 +5,7 @@ class Playernotifier extends ChangeNotifier{
   //informaciòn "el player no està reproduciendo musica entonces es invisible"
   bool _visible = true;
   String _currentThumbnail;
+  String _currentLocalThumbnail;
   String _CurrenTitle;
 
   void changeVisibility(bool visibility){
@@ -16,7 +17,10 @@ class Playernotifier extends ChangeNotifier{
     this._currentThumbnail = thumbnail;
     notifyListeners();
   }
-
+  void changeLocalThumbnail(String thumbnail){
+    this._currentLocalThumbnail = thumbnail;
+    notifyListeners();
+  }
   void changeTitle(String title){
     this._CurrenTitle = title;
     notifyListeners();
@@ -29,7 +33,9 @@ class Playernotifier extends ChangeNotifier{
   String getThumbnail(){
     return this._currentThumbnail;
   }
-
+  String getLocalThumbnail(){
+    return this._currentLocalThumbnail;
+  }
   String getTitle(){
     return this._CurrenTitle;
   }
