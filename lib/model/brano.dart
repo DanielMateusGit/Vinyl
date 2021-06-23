@@ -72,8 +72,15 @@ class Brano extends StatelessWidget {
                     },
                     child: new Container(
                       child: new Padding(
-                        child:  Image.network(
+                        child:
+                        url!=null?
+                        Image.network(
                           image,
+                          fit: BoxFit.cover,
+                          width: 160.0,
+                          height: 90.0,
+                        ) :   Image.file(
+                         File(image),
                           fit: BoxFit.cover,
                           width: 160.0,
                           height: 90.0,

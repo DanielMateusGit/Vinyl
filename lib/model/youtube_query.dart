@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_downloader/image_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:vinylproject/constants.dart';
@@ -9,7 +11,6 @@ import 'package:vinylproject/controllers/playlist_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/playlist.dart';
 import 'package:vinylproject/screens/music.dart';
-import 'package:vinylproject/screens/prova.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +51,7 @@ class YoutubeQuery extends StatelessWidget {
 
     try {
       var manifest =
-          await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
+      await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
       var streamInfo = manifest.audioOnly.withHighestBitrate();
 
       youtubeMediaExtractor.close();
@@ -69,7 +70,7 @@ class YoutubeQuery extends StatelessWidget {
 
     try {
       var manifest =
-          await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
+      await youtubeMediaExtractor.videos.streamsClient.getManifest(url);
       var streamInfo = manifest.audioOnly.withHighestBitrate();
       if (streamInfo != null) {
         // Get the actual stream
@@ -100,18 +101,30 @@ class YoutubeQuery extends StatelessWidget {
         await fileStream.close();
 
         youtubeMediaExtractor.close();
+        try {
+          // Saved with this method.
+          var imageId = await ImageDownloader.downloadImage(thumbnail);
+          if (imageId == null) {
+            return;
+          }
 
-        Brano b = new Brano(
-            nome: title,
-            url: '$appDocPath/$fileName',
-            channel: channel,
-            image: thumbnail,
-            idPlaylist: 2);
-        await BranoDBController.insertBrano(b);
-        print("scaricato");
+          var path = await ImageDownloader.findPath(imageId);
+          Brano b = new Brano(
+              nome: title,
+              path: '$appDocPath/$fileName',
+              channel: channel,
+              image: path,
+              idPlaylist: 2);
+          await BranoDBController.insertBrano(b);
+
+          print("scaricato");
+        } on PlatformException catch (error) {
+          print(error);
+        }
       }
     } catch (e) {
       print(e);
+
       return 'Unable to find data';
     }
   }
@@ -210,7 +223,47 @@ class YoutubeQuery extends StatelessWidget {
                       elevation: 16,
                       onChanged: (String newValue) {
                         if (newValue == "Scarica") {
-                          _downloadMedia();
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              Future.delayed(Duration(seconds: 0))
+                                  .then((_) async {
+                                await _downloadMedia();
+                                Navigator.pop(context);
+                              });
+
+                              return Dialog(
+                                child: new Container(
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                              child: Container(
+                                                  child:
+                                                  CircularProgressIndicator(
+                                                      strokeWidth: 3),
+                                                  width: 32,
+                                                  height: 32),
+                                              padding:
+                                              EdgeInsets.only(bottom: 16)),
+                                          Padding(
+                                              child: Text(
+                                                'Caricamento …',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              padding:
+                                              EdgeInsets.only(bottom: 4))
+                                        ])),
+                              );
+                            },
+                          );
                         }
                         if (newValue == "Aggiungi")
                           showDialog(
@@ -223,35 +276,135 @@ class YoutubeQuery extends StatelessWidget {
                                     ElevatedButton(
                                         child: Text("Podcast"),
                                         onPressed: () async {
-                                          Brano f = new Brano(
-                                              nome: title,
-                                              idPlaylist: 1,
-                                              channel: channel,
-                                              image: thumbnail,
-                                              url: await _getMedia());
-                                          await BranoDBController.insertBrano(
-                                              f);
                                           Navigator.pop(context);
-                                        }),
-                                    Consumer<downloadController>(
-                                      builder: (context, controller, build) {
-                                        return ElevatedButton(
-                                            child: Text("Musica"),
-                                            onPressed: () async {
-                                              Brano f = new Brano(
-                                                  nome: title,
-                                                  idPlaylist: 0,
-                                                  channel: channel,
-                                                  image: thumbnail,
-                                                  url: await _getMedia());
-                                              await BranoDBController
-                                                  .insertBrano(f);
-                                              controller.aggiornaPlaylist();
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) {
+                                              Future.delayed(
+                                                  Duration(seconds: 0))
+                                                  .then((_) async {
+                                                Brano f = new Brano(
+                                                    nome: title,
+                                                    idPlaylist: 1,
+                                                    channel: channel,
+                                                    image: thumbnail,
+                                                    url: await _getMedia());
+                                                await BranoDBController
+                                                    .insertBrano(f);
+                                                //pop dialog
 
-                                              Navigator.pop(context);
-                                            });
-                                      },
-                                    )
+                                                Navigator.pop(context);
+                                              });
+                                              return Dialog(
+                                                child: new Container(
+                                                    padding: EdgeInsets.all(16),
+                                                    child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Padding(
+                                                              child: Container(
+                                                                  child: CircularProgressIndicator(
+                                                                      strokeWidth:
+                                                                      3),
+                                                                  width: 32,
+                                                                  height: 32),
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                  bottom:
+                                                                  16)),
+                                                          Padding(
+                                                              child: Text(
+                                                                'Caricamento …',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                    16),
+                                                                textAlign:
+                                                                TextAlign
+                                                                    .center,
+                                                              ),
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                  bottom:
+                                                                  4))
+                                                        ])),
+                                              );
+                                            },
+                                          );
+                                          // Navigator.pop(context);
+                                        }),
+    Consumer<downloadController>(
+    builder: (context, controller, build) {
+                                return    ElevatedButton(
+                                        child: Text("Musica"),
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) {
+                                              Future.delayed(
+                                                  Duration(seconds: 0))
+                                                  .then((_) async {
+                                                Brano f = new Brano(
+                                                    nome: title,
+                                                    idPlaylist: 0,
+                                                    channel: channel,
+                                                    image: thumbnail,
+                                                    url: await _getMedia());
+                                                await BranoDBController
+                                                    .insertBrano(f);
+                                                Navigator.pop(context);
+                                              });
+                                              return Dialog(
+                                                child: new Container(
+                                                    padding: EdgeInsets.all(16),
+                                                    child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        mainAxisSize:
+                                                        MainAxisSize.min,
+                                                        children: [
+                                                          Padding(
+                                                              child: Container(
+                                                                  child: CircularProgressIndicator(
+                                                                      strokeWidth:
+                                                                      3),
+                                                                  width: 32,
+                                                                  height: 32),
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                  bottom:
+                                                                  16)),
+                                                          Padding(
+                                                              child: Text(
+                                                                'Caricamento …',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                    16),
+                                                                textAlign:
+                                                                TextAlign
+                                                                    .center,
+                                                              ),
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                  bottom:
+                                                                  4))
+                                                        ])),
+                                              );
+                                            },
+                                          );
+                                        });
+    })
                                   ],
                                 );
                               });
