@@ -4,6 +4,7 @@ import 'package:vinylproject/controllers/player_notifier.dart';
 import 'components/navigation_bar.dart';
 import 'components/player.dart';
 import 'controllers/audio_player_controller.dart';
+import 'controllers/brano_provider.dart';
 
 void main() => runApp(
 
@@ -18,6 +19,9 @@ void main() => runApp(
       // Provider for music controller
       ChangeNotifierProvider(
         create: (context) => AudioController(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => BranoController(),
       ),
     ],
     child: Vinyl(),

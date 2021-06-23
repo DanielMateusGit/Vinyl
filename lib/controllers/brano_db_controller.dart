@@ -53,6 +53,7 @@ class BranoDBController {
         channel: maps[i]['channel'],
         idPlaylist: maps[i]['idPlaylist'],
         image: maps[i]['image'],
+
       );
     });
     await db.close();

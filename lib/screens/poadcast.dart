@@ -4,51 +4,49 @@ import 'package:vinylproject/controllers/playlist_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/playlist.dart';
 
-class Podcast extends StatefulWidget {
+class Podcast extends StatefulWidget  {
 
   @override
-  _PodcastState createState() => _PodcastState();
+  PodcastState createState() => PodcastState();
 }
 
-class _PodcastState extends State<Podcast> {
+class PodcastState extends State<Podcast> {
   List<Brano> _playlists = [];
   @override
   void initState() {
     init();
   }
-  init() async
-  {
 
-
-
+  init() async {
     //esempio da eliminare
 
-
-
-    _playlists=await BranoDBController.brani(1);
+    _playlists = await BranoDBController.brani(1);
     setState(() {});
-
-
   }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(''),
+      ),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.only(left: 15.0, top: 25.0),
-            child: Text('_Podcast', style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 2,
-              fontSize: 18,
-            ),),
+            child: Text(
+              'Podcast',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1,
+                fontSize: 30,
+              ),
+            ),
           ),
-
-
           Expanded(
-            child:  ListView.builder(
+            child: ListView.builder(
               itemCount: _playlists.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(

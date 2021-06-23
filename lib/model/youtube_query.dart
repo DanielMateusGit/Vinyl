@@ -7,6 +7,7 @@ import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/playlist_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/playlist.dart';
+import 'package:vinylproject/screens/music.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 import 'package:http/http.dart' as http;
@@ -228,6 +229,9 @@ class YoutubeQuery extends StatelessWidget {
                                           await BranoDBController.insertBrano(
                                               f);
 
+                                            context
+                                                .findRootAncestorStateOfType<MusicState>()
+                                                .init();
                                           Navigator.pop(context);
                                         }),
                                     ElevatedButton(

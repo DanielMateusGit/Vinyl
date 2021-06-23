@@ -6,6 +6,7 @@ import 'package:vinylproject/controllers/audio_player_controller.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 import 'package:vinylproject/screens/music.dart';
+import 'package:vinylproject/screens/poadcast.dart';
 
 class Brano extends StatelessWidget {
   final int id;
@@ -132,16 +133,16 @@ class Brano extends StatelessWidget {
                       onChanged: (String newValue) async {
                         if (newValue == "Rimuovi") {
                           await BranoDBController.deleteBrano(id);
-                          if (context.findAncestorStateOfType<_MusicState>() !=
+                          if (context.findAncestorStateOfType<MusicState>() !=
                               null)
                             context
-                                .findRootAncestorStateOfType<_MusicState>()
+                                .findRootAncestorStateOfType<MusicState>()
                                 .init();
                           if (context
-                                  .findAncestorStateOfType<_PodcastState>() !=
+                                  .findAncestorStateOfType<PodcastState>() !=
                               null)
                             context
-                                .findRootAncestorStateOfType<_PodcastState>()
+                                .findRootAncestorStateOfType<PodcastState>()
                                 .init();
 
                         }
@@ -168,117 +169,5 @@ class Brano extends StatelessWidget {
   }
 }
 
-class Music extends StatefulWidget {
-  @override
-  _MusicState createState() => _MusicState();
-}
 
-class _MusicState extends State<Music> {
-  List<Brano> _playlists = [];
 
-  @override
-  void initState() {
-    init();
-  }
-
-  init() async {
-    _playlists = await BranoDBController.brani(0);
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-      ),
-      body : Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 15.0, top: 25.0),
-            child: Text(
-              'Music',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1,
-                fontSize: 30,
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _playlists.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.only(),
-                  child: _playlists[index],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Podcast extends StatefulWidget  {
-  @override
-  _PodcastState createState() => _PodcastState();
-}
-
-class _PodcastState extends State<Podcast> with AutomaticKeepAliveClientMixin<Podcast> {
-  List<Brano> _playlists = [];
-  @override
-  bool get wantKeepAlive => false;
-  @override
-  void initState() {
-    init();
-  }
-
-  init() async {
-    //esempio da eliminare
-
-    _playlists = await BranoDBController.brani(1);
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 15.0, top: 25.0),
-            child: Text(
-              'Podcast',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1,
-                fontSize: 30,
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _playlists.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.only(),
-                  child: _playlists[index],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
