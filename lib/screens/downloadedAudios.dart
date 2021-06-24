@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vinylproject/controllers/AudiosController.dart';
-import 'package:vinylproject/controllers/brano_db_controller.dart';
-import 'package:vinylproject/model/brano.dart';
 
-class dowloadedAudios extends StatefulWidget {
+
+class DowloadedAudios extends StatefulWidget {
   final String name;
 
-  dowloadedAudios({this.name});
+  DowloadedAudios({this.name});
 
   @override
-  downloadedAudios createState() => downloadedAudios(name: name);
+  DownloadedAudios createState() => DownloadedAudios(name: name);
 }
 
-class downloadedAudios extends State<dowloadedAudios> {
+class DownloadedAudios extends State<DowloadedAudios> {
   final String name;
 
-  downloadedAudios({this.name});
+  DownloadedAudios({this.name});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(child:
-        Consumer<downloadController>(builder: (context, controller, child) {
-          this.name=="Brani"? controller.aggiornaPlaylistDMusic():controller.aggiornaPlaylistDPodcast();
+    Consumer<downloadController>(builder: (context, controller, child) {
+      this.name=="Brani"? controller.aggiornaPlaylistDMusic():controller.aggiornaPlaylistDPodcast();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -31,8 +30,8 @@ class downloadedAudios extends State<dowloadedAudios> {
               itemCount: this.name=="Brani"? controller.getPlaylistDMusic().length: controller.getPlaylistDPodcast().length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: EdgeInsets.only(),
-                  child: this.name=="Brani"? controller.getPlaylistDMusic()[index]:controller.getPlaylistDPodcast()[index]
+                    padding: EdgeInsets.only(),
+                    child: this.name=="Brani"? controller.getPlaylistDMusic()[index]:controller.getPlaylistDPodcast()[index]
                 );
               },
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vinylproject/screens/prova.dart';
+import 'package:vinylproject/screens/downloadedAudios.dart';
 
 class Downloads extends StatefulWidget {
   @override
@@ -16,14 +16,14 @@ class _DownloadsState extends State<Downloads> {
           bottom: TabBar(
             indicatorColor: Colors.blueGrey,
             tabs: [
-              Tab(icon: Icon(Icons.record_voice_over_outlined), text: 'Brani'),
-              Tab(icon: Icon(Icons.record_voice_over_outlined), text: 'Podcast'),
+              Tab(text: 'Brani'),
+              Tab(text: 'Podcast'),
             ],
           ),
         ),
         body: TabBarView(
           children: ['Brani', 'Podcast']
-              .map((name) =>  dowloadedAudios( name:name))
+              .map((name) =>  DowloadedAudios( name:name))
               .toList(growable: false),
         ),
       ),

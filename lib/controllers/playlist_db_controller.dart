@@ -40,14 +40,14 @@ class PlaylistDBController {
     }
 
 
-  static Future<List<PlayList>> Playlists(int type) async {
+  static Future<List<PlayList>> playlists(int type) async {
     await init();
       final db = await database;
 
 
       final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id, nome, sottotitolo, tipo FROM playlist WHERE tipo=?',[type]);
 
-
+    await db.close();
       return List.generate(maps.length, (i) {
         return PlayList(
           id: maps[i]['id'],
@@ -57,7 +57,7 @@ class PlaylistDBController {
 
         );
       });
-    await db.close();
+
     }
     Future<void> deletePlaylist(int id) async {
 

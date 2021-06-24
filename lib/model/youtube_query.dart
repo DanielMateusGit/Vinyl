@@ -243,10 +243,11 @@ class YoutubeQuery extends StatelessWidget {
                                                 Future.delayed(
                                                         Duration(seconds: 0))
                                                     .then((_) async {
+                                                  Navigator.pop(context);
                                                   await _downloadMedia(3);
                                                   //pop dialog
 
-                                                  Navigator.pop(context);
+
                                                 });
                                                 return Dialog(
                                                   child: new Container(
@@ -306,8 +307,9 @@ class YoutubeQuery extends StatelessWidget {
                                                 Future.delayed(
                                                         Duration(seconds: 0))
                                                     .then((_) async {
-                                                  await _downloadMedia(2);
                                                   Navigator.pop(context);
+                                                  await _downloadMedia(2);
+
                                                 });
                                                 return Dialog(
                                                   child: new Container(
@@ -378,6 +380,7 @@ class YoutubeQuery extends StatelessWidget {
                                                 Future.delayed(
                                                         Duration(seconds: 0))
                                                     .then((_) async {
+                                                  Navigator.pop(context);
                                                   Brano f = new Brano(
                                                       nome: title,
                                                       idPlaylist: 1,
@@ -388,7 +391,7 @@ class YoutubeQuery extends StatelessWidget {
                                                       .insertBrano(f);
                                                   //pop dialog
 
-                                                  Navigator.pop(context);
+
                                                 });
                                                 return Dialog(
                                                   child: new Container(
@@ -448,6 +451,7 @@ class YoutubeQuery extends StatelessWidget {
                                                 Future.delayed(
                                                         Duration(seconds: 0))
                                                     .then((_) async {
+                                                  Navigator.pop(context);
                                                   Brano f = new Brano(
                                                       nome: title,
                                                       idPlaylist: 0,
@@ -456,7 +460,7 @@ class YoutubeQuery extends StatelessWidget {
                                                       url: await _getMedia());
                                                   await BranoDBController
                                                       .insertBrano(f);
-                                                  Navigator.pop(context);
+
                                                 });
                                                 return Dialog(
                                                   child: new Container(

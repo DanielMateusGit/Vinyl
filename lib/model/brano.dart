@@ -6,7 +6,7 @@ import 'package:vinylproject/controllers/audio_player_controller.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/player_notifier.dart';
 import 'package:vinylproject/screens/music.dart';
-import 'package:vinylproject/screens/poadcast.dart';
+import 'package:vinylproject/screens/podcast.dart';
 
 class Brano extends StatelessWidget {
   final int id;
@@ -46,6 +46,8 @@ class Brano extends StatelessWidget {
     Provider.of<Playernotifier>(context, listen: false).changeThumbnail(image);
     if(url==null)
     Provider.of<Playernotifier>(context, listen: false).changeLocalThumbnail(image);
+    else
+      Provider.of<Playernotifier>(context, listen: false).changeLocalThumbnail(null);
     Provider.of<Playernotifier>(context, listen: false).changeTitle(nome);
   }
 

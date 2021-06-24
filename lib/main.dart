@@ -39,6 +39,7 @@ class Vinyl extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: new Scaffold(
+
         bottomNavigationBar: NavigationBar(),
       ),
 
@@ -48,6 +49,7 @@ class Vinyl extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           percentage: 5.0,
           child: child,
+
         );
       },
 

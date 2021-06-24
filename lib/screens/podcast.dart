@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vinylproject/controllers/AudiosController.dart';
 import 'package:vinylproject/controllers/brano_db_controller.dart';
 import 'package:vinylproject/controllers/playlist_db_controller.dart';
 import 'package:vinylproject/model/brano.dart';
 import 'package:vinylproject/model/playlist.dart';
-import 'package:vinylproject/controllers/AudiosController.dart';
 
-class Music extends StatefulWidget {
+class Podcast extends StatefulWidget  {
+
   @override
-  MusicState createState() => MusicState();
+  PodcastState createState() => PodcastState();
 }
 
-class MusicState extends State<Music> {
+class PodcastState extends State<Podcast> {
+
   @override
   void initState() {
-    init();
+
   }
 
-  init() async {}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               alignment: AlignmentDirectional.bottomStart,
               children: [
                 Image(
-                  image: AssetImage('assets/20_one.png'),
+                  image: AssetImage('assets/ELON.png'),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 10, bottom: 10),
@@ -40,14 +41,14 @@ class MusicState extends State<Music> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Twenty One Pilots',
+                        'TEDx',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
                         ),
                       ),
                       Text(
-                        'Top week Artist',
+                        'Top week Speaker',
                         style: TextStyle(
                           fontWeight: FontWeight.w100,
                           fontSize: 15,
@@ -66,7 +67,7 @@ class MusicState extends State<Music> {
             Padding(
               padding: EdgeInsets.only(left: 10.0, top:40, bottom: 10),
               child: Text(
-                'Library',
+                'Poads',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
@@ -76,13 +77,13 @@ class MusicState extends State<Music> {
             Expanded(
               child: Consumer<downloadController>(
                 builder: (context, controller, child) {
-                  controller.aggiornaPlaylistMusic();
+                  controller.aggiornaPlaylistPodcast();
                   return ListView.builder(
-                    itemCount: controller.getPlaylistMusic().length,
+                    itemCount: controller.getPlaylistPodcast().length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: EdgeInsets.only(),
-                        child: controller.getPlaylistMusic()[index],
+                        child: controller.getPlaylistPodcast()[index],
                       );
                     },
                   );

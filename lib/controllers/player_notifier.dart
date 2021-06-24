@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class Playernotifier extends ChangeNotifier{
 
-  //informaciòn "el player no està reproduciendo musica entonces es invisible"
+
   bool _visible = true;
   String _currentThumbnail;
   String _currentLocalThumbnail;

@@ -26,12 +26,12 @@ class _SearchState extends State<Search> {
   void fetchVideo() async {
     _queries.clear();
     final response = await http.get(Uri.parse(
-        'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$_query&type=video&key=AIzaSyCBkLl_1dEmkxUEUdYJROlL9jMVDfBlCGY'));
+        'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=$_query&type=video&key=AIzaSyCBkLl_1dEmkxUEUdYJROlL9jMVDfBlCGY'));
 
     if (response.statusCode == 200) {
       var decodedData = jsonDecode(response.body);
 
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 10; i++) {
         _queries.add(YoutubeQuery.fromJson(decodedData, i));
       }
 
@@ -53,17 +53,8 @@ class _SearchState extends State<Search> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 15.0, top: 25.0),
-            child: Text('_Search', style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 0,
-              fontSize: 18,
-            ),),
-          ),
           SizedBox(
-            height: 20.0,
+            height: 50.0,
           ),
           Padding(
             padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
@@ -74,15 +65,15 @@ class _SearchState extends State<Search> {
                 suffixIcon: _isLoading == false
                     ? null
                     : IconButton(
-                        onPressed: () {
-                          this.setState(() {
-                            _textController.clear();
-                            _isLoading = false;
-                            _queries.clear();
-                          });
-                        },
-                        icon: Icon(Icons.close, size: 20.0),
-                      ),
+                  onPressed: () {
+                    this.setState(() {
+                      _textController.clear();
+                      _isLoading = false;
+                      _queries.clear();
+                    });
+                  },
+                  icon: Icon(Icons.close, size: 20.0),
+                ),
               ),
               textInputAction: TextInputAction.go,
               onChanged: (value) {
@@ -108,21 +99,21 @@ class _SearchState extends State<Search> {
           Expanded(
             child: _isLoading
                 ? Center(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
+              child: Container(
+                width: 50,
+                height: 50,
+                child: CircularProgressIndicator(),
+              ),
+            )
                 : ListView.builder(
-                    itemCount: _queries.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.only(),
-                        child: _queries[index],
-                      );
-                    },
-                  ),
+              itemCount: _queries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: EdgeInsets.only(),
+                  child: _queries[index],
+                );
+              },
+            ),
           ),
         ],
       ),

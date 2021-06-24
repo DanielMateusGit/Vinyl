@@ -22,7 +22,7 @@ class BranoController extends ChangeNotifier{
   // prepare an audio to play an url, but doesn't play it
   Future<void> prepare(String url) async {
     try{
-      int result = await _player.setUrl(url);
+       await _player.setUrl(url);
 
     }catch(e){
       print(e);
@@ -33,7 +33,7 @@ class BranoController extends ChangeNotifier{
   Future<void> play(String url) async {
     try{
 
-      int result = await _player.play(url);
+      await _player.play(url);
       _playing = true;
       notifyListeners();
 
@@ -48,7 +48,7 @@ class BranoController extends ChangeNotifier{
   Future<void> pause() async {
     try{
 
-      int result = await _player.stop();
+       await _player.stop();
       _playing = false;
       notifyListeners();
 
@@ -63,7 +63,7 @@ class BranoController extends ChangeNotifier{
   Future<void> resume() async {
     try{
 
-      int result = await _player.resume();
+      await _player.resume();
       _playing = true;
       notifyListeners();
     }catch(e){
@@ -77,7 +77,7 @@ class BranoController extends ChangeNotifier{
   Future<void> jump(int milliseconds) async {
     try{
 
-      int result = await _player.seek(Duration(milliseconds: milliseconds));
+      await _player.seek(Duration(milliseconds: milliseconds));
       notifyListeners();
 
     }catch(e){

@@ -14,6 +14,7 @@ class Player extends StatelessWidget {
   final double percentage;
   final Widget child;
 
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,7 +33,7 @@ class Player extends StatelessWidget {
                   builder: (height, percentage) {
                     if (height <= 70 && player.getTitle() != null) {
                       return Container(
-                        color: Colors.black12,
+                        color: Colors.black45,
                         child: CurrentSong(
                           title: player.getTitle(),
                           thumbnail: player.getThumbnail(),
@@ -41,26 +42,36 @@ class Player extends StatelessWidget {
                       );
                     } else {
                       return Container(
+                        color: Colors.black45,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              flex: 1,
-                              child: Container(
-                                color: Colors.yellow,
-                                width: MediaQuery.of(context).size.width,
-                              ),
-                            ),
-                            Expanded(
                               flex: 4,
                               child: Padding(
                                 padding: const EdgeInsets.all(50.0),
                                 child: Center(
-                                  child: Icon(
-                                    Icons.music_note,
-                                    size: 300.0,
-                                  ),
+                                  child: Container(
+                                      width: 300.0,
+                                      height: 300.0,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: player.getLocalThumbnail()==null? new    NetworkImage(player.getThumbnail())
+                                                :new FileImage(File(player.getLocalThumbnail())),
+                                            fit: BoxFit.cover),
+                                      )),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                              child: Text(
+                                player.getTitle(),
+                                overflow: TextOverflow.clip,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -72,16 +83,43 @@ class Player extends StatelessWidget {
                                   GestureDetector(
                                     child: Icon(
                                       Icons.skip_previous,
-                                      size: 50,
+                                      size: 60,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                                    child: Consumer<AudioController>(
+                                      builder: (context, player, child) {
+                                        return player.getPlayingState()
+                                            ? GestureDetector(
+
+                                          onTap: () {
+                                            player.pause();
+                                          },
+                                          child: Icon(
+                                            Icons.pause,
+                                            size: 60,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                            : GestureDetector(
+                                          onTap: () {
+                                            player.resume();
+                                          },
+                                          child: Icon(
+                                            Icons.play_arrow,
+                                            size: 60,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                   Icon(
-                                    Icons.play_arrow,
-                                    size: 70,
-                                  ),
-                                  Icon(
                                     Icons.skip_next,
-                                    size: 50,
+                                    size: 60,
+                                    color: Colors.black,
                                   ),
                                 ],
                               ),
@@ -133,7 +171,7 @@ class CurrentSong extends StatelessWidget {
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -150,7 +188,7 @@ class CurrentSong extends StatelessWidget {
                     },
                     child: Icon(
                       Icons.pause,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   )
                       : GestureDetector(
@@ -159,7 +197,7 @@ class CurrentSong extends StatelessWidget {
                     },
                     child: Icon(
                       Icons.play_arrow,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   );
                 },
