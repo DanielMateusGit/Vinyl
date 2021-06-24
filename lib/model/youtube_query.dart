@@ -227,9 +227,15 @@ class YoutubeQuery extends StatelessWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
+
                                   scrollable: true,
-                                  title: Text('Aggiungi a Playlist'),
-                                  actions: [
+                                  title:Center( child:Text('Scarica')),
+
+                                  content:
+
+                                  Row (
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
                                     Consumer<downloadController>(
                                         builder: (context, controller, build) {
                                       return ElevatedButton(
@@ -356,6 +362,8 @@ class YoutubeQuery extends StatelessWidget {
                                           });
                                     })
                                   ],
+                                )
+
                                 );
                               });
                         }
@@ -365,8 +373,13 @@ class YoutubeQuery extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   scrollable: true,
-                                  title: Text('Aggiungi a Playlist'),
-                                  actions: [
+                                    title:Center( child:Text('Aggiungi')),
+
+                                content:
+
+                                Row (
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
                                     Consumer<downloadController>(
                                         builder: (context, controller, build) {
                                       return ElevatedButton(
@@ -507,7 +520,8 @@ class YoutubeQuery extends StatelessWidget {
                                           });
                                     })
                                   ],
-                                );
+                                ),);
+
                               });
                       },
                       underline: Container(
