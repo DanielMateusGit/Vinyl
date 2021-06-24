@@ -26,7 +26,7 @@ class _SearchState extends State<Search> {
   void fetchVideo() async {
     _queries.clear();
     final response = await http.get(Uri.parse(
-        'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=$_query&type=video&key=AIzaSyCBkLl_1dEmkxUEUdYJROlL9jMVDfBlCGY'));
+        'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=$_query&type=video&key=AIzaSyD2VtVyLkR48JBaphehZ27xrB8z3_k_TU0'));
 
     if (response.statusCode == 200) {
       var decodedData = jsonDecode(response.body);

@@ -35,7 +35,7 @@ class BranoDBController {
       brano.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    await db.close();
+
   }
 
   static Future<List<Brano>> brani(int type) async {
@@ -43,7 +43,7 @@ class BranoDBController {
     final db = await database;
 
     final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id, nome, channel, idPlaylist, url,path,image FROM brano WHERE idPlaylist=?',[type]);
-    await db.close();
+
     return List.generate(maps.length, (i) {
       return Brano(
         id: maps[i]['id'],
@@ -68,6 +68,6 @@ class BranoDBController {
       where: 'id = ?',
       whereArgs: [id],
     );
-    await db.close();
+
   }
 }
